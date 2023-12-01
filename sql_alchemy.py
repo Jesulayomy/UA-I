@@ -8,22 +8,22 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 engine = db.create_engine(
-        'mysql://vagrant:1be36f1AINA@localhost/ua_high_alchemy',
+        'mysql+mysqldb://vagrant:PASS@localhost/ua_high_alchemy',
         echo=True)
 
 Base = declarative_base()
 
 class User(Base):
-    """ User class for base object """
+	""" User class for base object """
 
 	__tablename__ = 'users'
 
-	id = Column(Integer, primary_key=True)
-	name  = Column(String(40))
+	id = Column(Integer, primary_key=True, unique=True, nullable=False)
+	name  = Column(String(40), unique=True)
 	quirk = Column(String(35))
 
 	def __repr__(self):
-            """ Replaces the default __str__(ing) behavior """
+		""" Replaces the default __str__(ing) behavior """
 
 		return f"<User(name='{self.name}', quirk='{self.quirk}')>"
 
@@ -34,7 +34,7 @@ num_one = User(name='Zuko', quirk='Firebending')
 
 # print(num_one.name)
 
-Session =  sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine)
 
 session = Session()
 
